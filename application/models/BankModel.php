@@ -53,5 +53,23 @@ class BankModel extends CI_Model{
     $this->db->where('id',$id);
     return $this->db->update('customers',array('status'=>1));
    }
+   public function branchCheck($data){
+    return $this->db->get_where('branches',array('name'=>$data['name'],'email'=>$data['email']));
+   }
+   public function newBranch($data){
+    return $this->db->insert('branches',$data);
+   }
+   function branch_list(){
+    return $this->db->get('branches')->result();
+   }
+   function checkBranch($id){
+    return $this->db->get_where('branches',array('id'=>$id));
+   }
+   function deleteBranch($id){
+        // return $this->db->delete('branches',$id);
+        $this->db->where('id',$id);
+        return $this->db->delete('branches');
+   }
+
 }
 ?>

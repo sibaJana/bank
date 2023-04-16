@@ -133,7 +133,7 @@ class Bank extends CI_Controller{
        
         $config['base_url'] = base_url('Bank/UserAccount');
         $config['total_rows'] = $this->bm->totalcustomer();
-        $config['per_page'] = 7;
+        $config['per_page'] = 5;
 
         //design
     $config['full_tag_open'] = '<ul class="pagination">';        
@@ -205,9 +205,78 @@ class Bank extends CI_Controller{
             }
         }
         else{
-            echo json_encode(array('status'=>1,'message'=>'User Id Not Found'));
+            echo json_encode(array('status'=>0,'message'=>'User Id Not Found'));
         }
        
     }
+    public function branch(){
+        $this->load->view('admin/header/header');
+        $this->load->view('admin/header/css');
+        $this->load->view('admin/header/leftnavbar');
+        $this->load->view('admin/header/navbar');
+        $this->load->view('admin/body/branch');
+        $this->load->view('admin/footer/footer');
+        $this->load->view('admin/footer/js');
+        $this->load->view('admin/footer/end');
+    }
+     public function branchCreate(){
+        $this->input->post('name','true');
+        $this->input->post('email',true);
+        $this->input->post('address',true);
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('address', 'Address', 'required');
+        // $this->form_validation->set_rules('email', 'Email', 'required');
+        if($this->form_validation->run()==true){
+
+            $data['name']=$this->input->post('name','true');
+            $data['email']=$this->input->post('email',true);
+            $data['address']=$this->input->post('address',true); 
+            $datacheck=$this->bm->branchCheck($data);
+            if($datacheck->num_rows()==1){
+                echo json_encode(array('status'=>1,'msg'=>'Branch is already exits'));
+            }
+            else{
+                $newBranch=$this->bm->newBranch($data);
+                if($newBranch){
+                    echo json_encode(array('status'=>2,'msg'=>'New Branch Created'));   
+                }
+                else{
+                    echo json_encode(array('status'=>3,'msg'=>'Try after some time latter')); 
+                }
+
+
+            }
+
+        }
+
+    } 
+
+    function branchList(){
+        $branchlist=$this->bm->branch_list();
+
+        echo json_encode($branchlist);
+    }
+
+    function deleteBranch($id=null){
+        // $data['id']=$this->input->post('id',true);
+        $branch=$this->bm->checkBranch($id);
+        if($branch){
+            $delete_branch=$this->bm->deleteBranch($id);
+            if($delete_branch){
+                echo json_encode(array('status'=>2,'msg'=>'Branch Deleted Successfully'));  
+            }
+            else{
+                echo json_encode(array('status'=>2,'msg'=>'Try after Some Time Later'));  
+             
+            }
+        }
+        else{
+            echo json_encode(array('status'=>3,'msg'=>'Id Not found ')); 
+               
+        }
+    }
+
+
 }
 ?>

@@ -6,6 +6,7 @@
             <div class="card-header pb-0">
               <h6>Inactive Account Tables</h6>
             </div>
+            <form action="">
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
@@ -60,10 +61,18 @@
                         <span class="text-secondary text-xs font-weight-bold"><?php echo $val->date  ?></span>
                       </td>
                       <td class="align-middle" align="center">
-                        <a href="<?php //echo base_url('Bank/UserAccountcreate/').$val->id; ?>" id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
-                          Aprove
+                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
+                        <i class="fa-solid fa-pen-to-square fa-beat fa-lg" style="color: #1a8e31;"></i>
+                        </a>
+                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
+                        <i class="fa-brands fa-creative-commons-sa fa-beat fa-lg" style="color: #417ee6;"></i>
+                        </a>
+                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
+                        <i class="fa-regular fa-trash-can fa-beat fa-lg" style="color: #d80e0e;"></i>
                         </a>
                       </td>
+                     
+                     
                     </tr>
                     <?php
                     }
@@ -213,7 +222,9 @@
                   </tbody>
                 </table>
               </div>
+            
             </div>
+           </form>
           </div>
         </div>
       </div>
@@ -544,6 +555,7 @@
       </div>
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
 
     var win = navigator.platform.indexOf('Win') > -1;
@@ -555,19 +567,26 @@
     }
 
     $(document).ready(function(){
-      $('#createaccount').click(function(){
+      $('#createaccount').click(function(event){
+        event.preventDefault();
+        // alert('hello');
         $.ajax({
           type:"POST",
-                    url:"<?php echo base_url('Bank/UserAccountcreate/').$val->id;  ?>",
-                    data:{
-                        
-                    },
+                   
                     dataType:"json",
                     cache:false,
                     success:function(response){
                       if(response.status==0){
-
-                      }
+                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
+                    }
+                    else if(response.status==1){
+                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
+                  
+                    }
+                    else if(response.status==2){
+                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
+                  
+                    }
                     },
                     error:function(){
 
