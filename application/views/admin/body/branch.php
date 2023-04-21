@@ -143,9 +143,7 @@
     </div>
   </div>
 </div>
-<form >
-  <input type="hidden" id="branchid">
-</form>
+
 <table class="table table-borderless mt-5" id="branchTable">
 <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Open New Branch</button>
 
@@ -156,7 +154,7 @@
   <th>Branch Address</th>
   <th>Action</th>
 </tr>
-<tbody></tbody>
+<tbody id="listRecords"></tbody>
 </table>
 </div> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -179,10 +177,11 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
 
   modalTitle.textContent = 'New message to ' + recipient
   modalBodyInput.value = recipient
-})
+});
+
 
 $(document).ready(function(){
-  // branchList();
+  branchList();
 $('#branch').click(function(){
 $('#branch').addClass('disabled');
 $('#branch').val('Submitting...');
@@ -203,10 +202,10 @@ setTimeout(function(){
                     },
                     dataType:"json",
                     cache:false,
+                   
                     success:function(response){
-                      branchList();
-                      $('#branch').removeClass('disabled');
-                      $('#branch').val('Send message');
+                      // branchList();
+                     
                         // console.log(response);
                        if(response.status==1){
                         $.notify(response.msg, "info");
@@ -233,7 +232,7 @@ setTimeout(function(){
 
 });
 // delete id
-$('#deleteBranch').click(function(){
+/* $('#deleteBranch').click(function(){
   // var id =$('#deleteBranch').val();
   // alert(id);
   $.ajax({
@@ -241,6 +240,7 @@ $('#deleteBranch').click(function(){
                     url:"<?php echo base_url('Bank/deleteBranch');  ?>",
                     dataType:"json",
                     cache:false,
+                    
                     success:function(response){
                       // branchList();
                        if(response.status==1){
@@ -257,55 +257,63 @@ $('#deleteBranch').click(function(){
                         
 
                     ,error:function(response){
-                      $('#branch').removeClass('disabled');
-                      $('#branch').val('Submit');
+              
                       $.notify(response.msg, "error");
                     }
                   });
 
-});
+}); */
 
 });
 
 function branchList(){
-
   $.ajax({
-                    type:"POST",
-                    url:"<?php echo base_url('Bank/branchList');  ?>",
-                    async : false,
-                    dataType:"json",
-                    // cache:false,
-                    success:function(response){
-                      console.log(response.length);
-                 for (var i = 0; i < response.length; i++) {
-                  
-                $('#branchTable tbody').append('<tr>' +
-                    '<td>' + response[i].id + '</td>' +
-                    '<td>' + response[i].name + '</td>' +
-                    '<td>' + response[i].address + '</td>' +
-                    '<td>'+ '<a href="<?php echo base_url('Bank/editBranch/')?>' + response[i].id + '" id="editBranch" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit branch">'+
-                    '<i class="fa-solid fa-pen-to-square fa-beat fa-lg" style="color: #1a8e31;"></i>'+
-                    '</a>' +
+    type: "POST",
+    url: "<?php echo base_url('Bank/branchList'); ?>",
+    async: false,
+    dataType: "json",
+    cache: false,
+    success:function(response){
+    console.log(response.length);
+    // Clear the existing data from the table
+    $('#listRecords').empty();
+    for (var i = 0; i < response.length; i++) {
+        // Append the new data
+        $('#listRecords').append('<tr>' +
+            '<td>' + response[i].id + '</td>' +
+            '<td>' + response[i].name + '</td>' +
+            '<td>' + response[i].address + '</td>' +
+            '<td>'+ '<a href="<?php //echo base_url('Bank/editBranch/')?>' + response[i].id + '" id="editBranch" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit branch">'+
+            '<i class="fa-solid fa-pen-to-square fa-beat fa-lg" style="color: #1a8e31;"></i>'+
+            '</a>' +
 
-                    '<a href="<?php echo base_url('Bank/viewBranch/')?>' + response[i].id + '" id="viewBranch" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="View branch">'+
-                    '<i class="fa-brands fa-creative-commons-sa fa-beat fa-lg" style="color: #417ee6;"></i>'+
-                    '</a>'+
+            '<a href="<?php //echo base_url('Bank/viewBranch/')?>' + response[i].id + '" id="viewBranch" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="View branch">'+
+            '<i class="fa-brands fa-creative-commons-sa fa-beat fa-lg" style="color: #417ee6;"></i>'+
+            '</a>'+
 
-                    '<a href="<?php echo base_url('Bank/deleteBranch/')?>' + response[i].id + '" id="deleteBranch" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
-                    '<i class="fa-regular fa-trash-can fa-beat fa-lg" style="color: #d80e0e;"></i>'+
-                    '</a>'+
+            '<a href="<?php //echo base_url('Bank/deleteBranch/')?>' + response[i].id + '" id="deleteBranch" class="text-secondary btn font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
+            '<i class="fa-regular fa-trash-can fa-beat fa-lg" style="color: #d80e0e;"></i>'+
+            '</a>'+
                     
-                    '</td>'+
-                    '</tr>');
-            }
-                                    
-                        }
-                        ,error:function(response){
-                   
-                    }
-                  });
+            '</td>'+
+            '</tr>');
+    }
+
+   
+		
+							
+		
+	
 
 
-                  
+
+
 }
+,
+    error: function(response){                   
+    }
+  });
+}
+
+
 </script>
