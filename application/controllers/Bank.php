@@ -12,7 +12,7 @@ class Bank extends CI_Controller{
             $this->load->library('pagination');
             // $this->load->helper("url");
 
-
+            echo "hi";
             
 
         }
