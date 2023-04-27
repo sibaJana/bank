@@ -8,8 +8,11 @@ class UserModel extends CI_Model{
      }
  
      public function login($data){
-         return $this->db->get_where('customers',array('email'=>$data['email'],'password'=>$data['password']))->result_array();
+         return $this->db->get_where('customers',$data)->result_array();
          
+     }
+     public function branch(){
+        return $this->db->get_where('branches',array('status'=>1))->result();
      }
 }
 ?>

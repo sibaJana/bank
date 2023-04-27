@@ -54,7 +54,7 @@ class BankModel extends CI_Model{
     return $this->db->update('customers',array('status'=>1));
    }
    public function branchCheck($data){
-    return $this->db->get_where('branches',array('name'=>$data['name'],'email'=>$data['email']));
+    return $this->db->get_where('branches',array('name'=>$data['name'],'email'=>$data['email']))->result();
    }
    public function newBranch($data){
     return $this->db->insert('branches',$data);
@@ -70,6 +70,242 @@ class BankModel extends CI_Model{
         $this->db->where('id',$id);
         return $this->db->delete('branches');
    }
+   public function updateBranchStatus($id){
+   
+    $a=$this->db->get_where('branches',array('id'=>$id))->result_array();
+    // echo var_dump($a);
+    // echo $a[0]['status'];
+    if($a[0]['status']==0){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+
+}
+
+public function inactive($id){
+    $this->db->where('id',$id);
+    return $this->db->update('branches',array('status'=>0));
+}
+public function active($id){
+    $this->db->where('id',$id);
+    return $this->db->update('branches',array('status'=>1));
+}
+public function getBranch($id){
+    return $this->db->get_where('branches',array('id'=>$id))->result_array();
+}
+function updateBranch($branchId,$data){
+    $this->db->where('id',$branchId);
+    return $this->db->update('branches',$data);
+}
+public function branchNameCheck($data, $branchId){
+    $this->db->where('name',$data['name']);
+    $this->db->where('id !=',$branchId); // Exclude current branch ID from check
+    $query=$this->db->get('branches');
+    $rowcount=$query->num_rows();
+    return $rowcount;
+}
+public function branchEmailCheck($data, $branchId){
+    $this->db->where('email',$data['email']);
+    $this->db->where('id !=',$branchId); // Exclude current branch ID from check
+    $query=$this->db->get('branches');
+    $rowcount=$query->num_rows();
+    return $rowcount;
+}
+/* public function userDetails(){
+    $this->db->select('*');
+$this->db->from('customers');
+$this->db->join('accounts', 'customers.id = accounts.customers_id');
+
+return $this->db->get()->result();
+// echo var_dump($query);
+} */
+/* public function userDetails() {
+    $this->db->select('*');
+    $this->db->from('accounts');
+    $this->db->join('customers', 'accounts.customers_id = customers.id');
+    $this->db->where('customers.status', array(1, 2));
+
+    return $this->db->get()->result();
+} */
+public function userDetails() {
+    $this->db->select('*');
+    $this->db->from('accounts');
+    $this->db->join('customers', 'accounts.customers_id = customers.id');
+
+    $statuses = array(1, 2);
+    foreach ($statuses as $status) {
+        $this->db->or_where('customers.status', $status);
+    }
+
+    return $this->db->get()->result();
+}
+
+
+function showUnconfirmedUser(){
+    $this->db->where('status',0);
+    return $this->db->get('customers')->result();
+}
+function checkUser($id){
+    return $this->db->get_where('branches',array('id'=>$id));
+   }
+   public function deleteData($id) {
+/*     $this->db->where('customers.id', $id);
+    $this->db->delete('customers');
+    $this->db->where('accounts.customers_id', $id);
+    // $this->db->where('accounts.customers_id', $id);
+    $this->db->delete('accounts');
+    return true; */
+
+    $this->db->trans_start();
+
+$this->db->where('customers.id', $id);
+$this->db->delete('customers');
+
+$this->db->where('accounts.customers_id', $id);
+$this->db->delete('accounts');
+
+$this->db->trans_complete();
+
+if ($this->db->trans_status() === FALSE) {
+   return false;
+} else {
+    // handle success
+    return true;
+} 
+}
+
+public function updateUserStatus($id){
+   
+    $a=$this->db->get_where('customers',array('id'=>$id))->result_array();
+    // echo var_dump($a);
+    // echo $a[0]['status'];
+    if($a[0]['status']==0){
+        return 0;
+    }
+    else if($a[0]['status']==1){
+        return 1;
+    }
+    else if($a[0]['status']==2){
+        return 2;
+    }
+
+}
+
+public function blockUser($id){
+    $this->db->where('id',$id);
+    return $this->db->update('customers',array('status'=>2));
+}
+
+public function activeUser($id){
+    $this->db->where('id',$id);
+    return $this->db->update('customers',array('status'=>1));
+}
+public function getUser($id){
+    return $this->db->get_where('customers',array('id'=>$id))->result_array();
+}
+function updateUser($branchId,$data){
+    $this->db->where('id',$branchId);
+    return $this->db->update('customers',$data);
+}
+
+public function userEmailCheck($data, $userId){
+    $this->db->where('email',$data['email']);
+    $this->db->where('id !=',$userId); // Exclude current branch ID from check
+    $query=$this->db->get('customers');
+    $rowcount=$query->num_rows();
+    return $rowcount;
+}
+public function userPhoneCheck($data, $userId){
+    $this->db->where('phone',$data['phone']);
+    $this->db->where('id !=',$userId); // Exclude current user ID from check
+    $query=$this->db->get('customers');
+    $rowcount=$query->num_rows();
+    return $rowcount;
+}
+// *****************SEARCHING************************
+public function search($query)
+{
+$this->db->select('*');
+$this->db->from('accounts');
+$this->db->join('customers', 'accounts.customers_id = customers.id');
+$this->db->where('customers.id', $query);
+$this->db->or_where('accounts.accountNumber', $query);
+return $this->db->get()->result();
+
+}
+/* *****************SEARCHING END************************  */
+
+// *****************Money deposit************************
+
+public function deposit_money($data) {
+    $this->db->trans_start();
+    // Get the current balance for the account
+    $this->db->select('balance');
+    $this->db->from('accounts');
+    $this->db->where('accountNumber', $data['accountNumber']);
+    $query = $this->db->get();
+    $row = $query->row();
+    $current_balance = $row->balance;
+    // Update the account balance with the deposit amount
+    $new_balance = $current_balance + $data['amount'];
+    $this->db->where('accountNumber', $data['accountNumber']);
+    $this->db->update('accounts',array('balance'=>$new_balance));
+    $this->db->insert('transaction',$data);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+    return false;
+    } else {
+    // handle success
+    return $new_balance;
+    } 
+
+}
+// *****************Money withdraw************************
+
+public function withdraw_money($data) {
+    $this->db->trans_start();
+
+    // Get the current balance for the account
+    $this->db->select('balance');
+    $this->db->from('accounts');
+    $this->db->where('accountNumber', $data['accountNumber']);
+    $query = $this->db->get();
+    $row = $query->row();
+    $current_balance = $row->balance;
+
+    // Check if the withdrawal amount exceeds the available balance
+    if ($data['amount'] > $current_balance) {
+        $this->db->trans_rollback();
+        return false;
+    }
+
+    // Update the account balance with the withdrawal amount
+    $new_balance = $current_balance - $data['amount'];
+    $this->db->where('accountNumber', $data['accountNumber']);
+    $this->db->update('accounts',array('balance'=>$new_balance));
+
+    // Add a new transaction record for the withdrawal
+    $this->db->insert('transaction', $data);
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+        return false;
+    } else {
+        // Return the new account balance
+        return $new_balance;
+    } 
+}
+
+
+    /* updateBalance */
+    public function updateBalance($accountNumber){
+       return  $this->db->get_where('accounts',array('accountNumber'=>$accountNumber))->result();
+    }
+
 
 }
 ?>

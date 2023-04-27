@@ -12,213 +12,17 @@
                 <table class="table align-items-center mb-0">
                   <thead >
                     <tr align-item="center">
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Account Type</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Id</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User Name</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email Id</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Account Number</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Balance</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                       <th class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php 
-                 
-                    foreach($data as $val){
-                      ?>
-                    
-                    <tr >
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm"><?php echo $val->name;  ?></h6>
-                            <p class="text-xs text-secondary mb-0"><?php echo $val->email;  ?></p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">SAVING</p>
-                        <p class="text-xs text-secondary mb-0"><?php echo $val->phone;  ?></p>
-                      </td>
-                      <?php
-                      if($val->status==0){
-                        ?><td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-danger">Inactive</span>
-                      </td>
-                        <?php
-                      }
-                      else{
-                        ?>
-                        <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">active</span>
-                      </td>
-                        <?php
-                      }
-                      ?>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold"><?php echo $val->date  ?></span>
-                      </td>
-                      <td class="align-middle" align="center">
-                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
-                        <i class="fa-solid fa-pen-to-square fa-beat fa-lg" style="color: #1a8e31;"></i>
-                        </a>
-                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
-                        <i class="fa-brands fa-creative-commons-sa fa-beat fa-lg" style="color: #417ee6;"></i>
-                        </a>
-                        <a href='<?php echo base_url('Bank/UserAccountcreate/').$val->id; ?>' id="createaccount" data-toggle="modal" data-target="#exampleModalCenter" class="text-secondary btn   font-weight-bold text-xs" style="color:red" data-toggle="tooltip" data-original-title="Edit user">
-                        <i class="fa-regular fa-trash-can fa-beat fa-lg" style="color: #d80e0e;"></i>
-                        </a>
-                      </td>
-                     
-                     
-                    </tr>
-                    <?php
-                    }
-                   
-                    ?>
-                    <?php  echo $link;  ?>
-                    <!-- <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-3.jpg" class="avatar avatar-sm me-3" alt="user2">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Alexa Liras</h6>
-                            <p class="text-xs text-secondary mb-0">alexa@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programator</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">11/01/19</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr> -->
-                    <!-- <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-4.jpg" class="avatar avatar-sm me-3" alt="user3">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Laurent Perrier</h6>
-                            <p class="text-xs text-secondary mb-0">laurent@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Executive</p>
-                        <p class="text-xs text-secondary mb-0">Projects</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Online</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">19/09/17</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr> -->
-                    <!-- <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-3.jpg" class="avatar avatar-sm me-3" alt="user4">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Michael Levi</h6>
-                            <p class="text-xs text-secondary mb-0">michael@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programator</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Online</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">24/12/08</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr> -->
-                    <!-- <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user5">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Richard Gran</h6>
-                            <p class="text-xs text-secondary mb-0">richard@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Executive</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">04/10/21</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr> -->
-                    <!-- <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-4.jpg" class="avatar avatar-sm me-3" alt="user6">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Miriam Eric</h6>
-                            <p class="text-xs text-secondary mb-0">miriam@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Programtor</p>
-                        <p class="text-xs text-secondary mb-0">Developer</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">14/09/20</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr> -->
+                  <tbody id="listRecords">
                   </tbody>
                 </table>
               </div>
@@ -239,17 +43,21 @@
               <div class="table-responsive p-0">
                 <table class="table align-items-center justify-content-center mb-0">
                   <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Project</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Budget</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Completion</th>
+                    <tr align="center">
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Id</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email Id</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Action</th>
                       <th></th>
+                      <form><input type="hidden" id="branchId" value=""></form>
+                      
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="user">
                     
-                    <tr>
+                   <!--  <tr>
                       <td>
                         <div class="d-flex px-2">
                           <div>
@@ -281,7 +89,7 @@
                           <i class="fa fa-ellipsis-v text-xs"></i>
                         </button>
                       </td>
-                    </tr>
+                    </tr> -->
                     <!-- <tr>
                       <td>
                         <div class="d-flex px-2">
@@ -449,7 +257,7 @@
                     </tr> -->
                   </tbody>
                 </table>
-                <?php //echo $link;  ?>
+                
               </div>
             </div>
           </div>
@@ -555,6 +363,45 @@
       </div>
     </div>
   </div>
+
+    
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" name="branchId" id="branchId">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Name:</label>
+            <input type="text"  class="form-control" id="nameUpdate">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Email:</label>
+            <input type="text" required class="form-control" id="emailUpdate">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Phone:</label>
+            <input type="text" required class="form-control" id="phoneUpdate">
+          </div>
+          
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="formClear" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" id="branch" class="btn btn-primary">Send message</button> -->
+
+        <input type="button" class="btn btn-primary" id="update"  value="Update">
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
 
@@ -565,33 +412,338 @@
       }
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
-
     $(document).ready(function(){
-      $('#createaccount').click(function(event){
-        event.preventDefault();
-        // alert('hello');
-        $.ajax({
-          type:"POST",
-                   
-                    dataType:"json",
-                    cache:false,
-                    success:function(response){
-                      if(response.status==0){
-                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
-                    }
-                    else if(response.status==1){
-                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
-                  
-                    }
-                    else if(response.status==2){
-                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');   
-                  
-                    }
-                    },
-                    error:function(){
+      userlist();
+      alluser();
 
-                    }
-        });
+      // account delete
+$(document).on('click', '.deleteUser', function(e) {
+  e.preventDefault();
+  var id = $(this).data('id');
+  console.log(id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type:"POST",
+        data:{id:id},
+        url:"<?php echo base_url('Bank/deleteUser'); ?>",
+        dataType:"json",
+        cache:false,
+        success:function(response){
+          $('form')[0].reset();
+          if(response.status==1){
+            Swal.fire(
+      'Deleted!',
+      response.msg,
+      'success'
+    )
+          }
+          else if(response.status==2){
+            Swal.fire(
+      'Error!',
+      response.msg,
+      'error'
+    )
+          }
+          else if(response.status==3){
+            Swal.fire(
+      'Warning!',
+      response.msg,
+      'warning'
+    )
+          }
+          userlist();
+
+
+        },
+        error:function(response){
+          $.notify(response.msg, "error");
+        }
       });
-    });
+    }
+  });
+});
+
+
+// account block by admin
+
+$(document).on('click', '.blockUser', function(e) {
+  e.preventDefault();
+  var branchId = $(this).data('id');
+  console.log(branchId);
+      $.ajax({
+        type:"POST",
+        data:{branchId:branchId},
+        url:"<?php echo base_url('Bank/updateUserStatus'); ?>",
+        dataType:"json",
+        cache:false,
+        success:function(response){
+          userlist();
+
+        },
+        error:function(response){
+          $.notify(response.msg, "error");
+        }
+      });
+});
+
+
+//edit user details
+
+// show all  branch details for edit
+
+$(document).on('click', '.showData', function(e) {
+  e.preventDefault();
+  var branchId = $(this).data('id');
+  console.log(branchId);
+      $.ajax({
+        type:"POST",
+        data:{branchId:branchId},
+        url:"<?php echo base_url('Bank/showData'); ?>",
+        dataType:"json",
+        cache:false,
+        success:function(response){
+          // branchList();
+          // console.log(response.length);
+          // console.log(response[0].id);
+          $('#branchId').val(response[0].id);
+          $('#nameUpdate').val(response[0].name);
+          $('#emailUpdate').val(response[0].email);
+          $('#phoneUpdate').val(response[0].phone);
+          
+
+        },
+        error:function(response){
+          $.notify(response.msg, "error");
+        }
+      });
+});
+
+
+// update user details
+
+$(document).on('click', '#update', function(e) {
+var id=$('#branchId').val();
+var name=$('#nameUpdate').val();
+var email=$('#emailUpdate').val();
+var phone=$('#phoneUpdate').val();
+if (name === '' || email === '' || phone === '') {
+      
+      $.notify("Please fill in all required fields.", "warn");
+      return false;
+    }
+// alert(name);
+// $('#branch').addClass('disabled');
+$('#update').val('Updatting...');
+setTimeout(function(){
+
+
+$.ajax({
+                  type:"POST",
+                  url:"<?php echo base_url('Bank/updateUser');  ?>",
+                  data:{
+                      id:id,
+                      name:name,
+                      email:email, 
+                      phone:phone
+                  },
+                  dataType:"json",
+                  cache:false,
+                 
+                  success:function(response){
+                    userlist();
+                    $('#update').removeClass('disabled');
+                    $('#update').val('Update');
+                    $('form')[0].reset();
+                    if(response.status==1){
+                        $.notify(response.msg, "warn");
+                       }else if(response.status==2){
+                        $.notify(response.msg, "warn");
+                       }else if(response.status==3){
+                        $.notify(response.msg, "warn");
+                       }
+                       else if(response.status==4){
+                        $.notify(response.msg, "success");
+                       }else if(response.status==5){
+                        $.notify(response.msg, "error");
+                       }
+                  
+                      }
+                     
+                      
+
+                  ,error:function(response){
+                    $('#update').removeClass('disabled');
+                    $('#update').val('Update');
+                    $.notify(response.msg, "error");
+                    $('form')[0].reset();
+                  }
+                });
+              },2000);
+
+
+
+
+
+});
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// all user accout verification and confirm account
+
+  
+      // account nuber created
+$(document).on('click', '.UnverifiedUser', function(e) {
+  e.preventDefault();
+  var id = $(this).data('id');
+  var branch_id = $('#branchId').val();
+  // alert(userId);
+  // console.log(branchId);
+  Swal.fire({
+  title: 'Do you want to approve the account',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Approve',
+  denyButtonText: `Don't approve`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type:"POST",
+        data:{id:id,branch_id:branch_id},
+        url:"<?php echo base_url('Bank/UserAccountcreate'); ?>",
+        dataType:"json",
+        cache:false,
+        success:function(response){
+          alluser();
+
+          if(response.status==0){
+            Swal.fire('Not Save!', '', 'warning');
+          }
+          else if(response.status==1){
+            Swal.fire('Saved!', '', 'success');
+          }
+          else if(response.status==2){
+            Swal.fire('Not Save!', '', 'error'); 
+          }
+        },
+        error:function(response){
+          $.notify(response.msg, "error");
+        }
+      });
+    }
+  });
+});
+  });
+// function for unverified user
+
+function alluser(){
+
+  $.ajax({
+    type: "POST",
+    url: "<?php echo base_url('Bank/showUnconfirmedUser'); ?>",
+    async: false,
+    dataType: "json",
+    cache: false,
+    success:function(response){
+      userlist();
+    console.log(response.length);
+    $('#user').empty();
+    for (var i = 0; i < response.length; i++) {
+        // Append the new data
+        // $('#branchId').val(response[i].branch_id);
+        $('#user').append('<tr align="center">' +
+            '<td>' + response[i].id + '</td>' +
+            '<td>' + response[i].name + '</td>' +
+            '<td>' + response[i].email + '</td>' +
+            '<td>' + response[i].phone + '</td>' +
+            
+            '<td>' + response[i].date+ '</td>' + 
+             +$('#branchId').val(response[i].branch_id)  +
+            '<td>'+ 
+            '<a href="javascript:void(0);" class="text-secondary btn font-weight-bold text-xs UnverifiedUser " data-id="' + response[i].id + '" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
+            '<i class="fa-solid fa-check fa-beat-fade fa-xl" style="color: #1cca1e;"></i>'+
+            '</a>'+
+            '</td>'+
+            '</tr>');
+    }
+  }
+  ,
+    error: function(response){                   
+    }
+  });
+}
+
+
+// here all the user account active and deactive happen
+function userlist(){
+  $.ajax({
+    type: "POST",
+    url: "<?php echo base_url('Bank/userList'); ?>",
+    async: false,
+    dataType: "json",
+    cache: false,
+    success:function(response){
+    console.log(response.length);
+    // Clear the existing data from the table
+    $('#listRecords').empty();
+    for (var i = 0; i < response.length; i++) {
+        // Append the new data
+        $('#listRecords').append('<tr align="center">' +
+            '<td>' + response[i].id + '</td>' +
+            '<td>' + response[i].name + '</td>' +
+            '<td>' + response[i].email + '</td>' +
+            '<td>' + response[i].accountNumber + '</td>' +
+            '<td>'+'<i class="fa-solid fa-indian-rupee-sign  fa-lg" style="color: #b2ad1f;"></i>'+" " + response[i].balance + '</td>' +
+            '<td class=" ' + (response[i].status == 2 ? "text-danger" : "text-success") + '">' + (response[i].status == 2 ? "Block" : "Active") + '</td>' +
+
+            '<td>'+ 
+            '<a href="javascript:void(0);" class="text-secondary btn font-weight-bold text-xs showData " data-bs-toggle="modal" data-bs-target="#exampleModal1"   data-id="' + response[i].id + '" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
+            '<i class="fa-solid fa-pen-to-square fa-beat fa-lg" style="color: #1a8e31;"></i>'+
+            '</a>'+
+            '<a href="javascript:void(0);" class="text-secondary btn font-weight-bold text-xs blockUser" data-id="' + response[i].id + '" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
+            '<i class="fa-brands fa-creative-commons-sa fa-beat fa-lg" style="color: #417ee6;"></i>'+
+            '</a>'+
+            '<a href="javascript:void(0);" class="text-secondary btn font-weight-bold text-xs deleteUser" data-id="' + response[i].id + '" style="color:red" data-toggle="tooltip" data-original-title="Delete branch">'+
+            '<i class="fa-regular fa-trash-can fa-beat fa-lg" style="color: #d80e0e;"></i>'+
+            '</a>'+   
+            '</td>'+
+            '</tr>');
+    }
+
+   
+		
+							
+		
+	
+
+
+
+
+  }
+  ,
+    error: function(response){                   
+    }
+  });
+}
   </script>

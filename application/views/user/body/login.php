@@ -114,7 +114,7 @@
            var rememberme=$('#rememberme').val();
            $.ajax({
                     type:"POST",
-                    url:"<?php echo base_url('Bank/singin');  ?>",
+                    url:"<?php echo base_url('User/singin');  ?>",
                     data:{
                         email:email,
                         password:password, 
@@ -126,25 +126,25 @@
                       $("#login").removeClass("spinner");
                       $('#myform')[0].reset();
                     if(response.status==0){
-                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');
+                      $.notify(response.message, {color: "#fff",align:"center", background: "#D44950"});
                    
                       
                     }
                     else if(response.status==1){
                      
-                      $('#display').html('<div class="alert alert-warning" role="alert">'+response.message+'</div>');
+                      $.notify(response.message, {color: "#fff",align:"center", background: "#D44950"});
                     }
                     else if(response.status==2){
                       
-                      $('#display').html('<div class="alert alert-danger" role="alert">'+response.message+'</div>');
+                      $.notify(response.message, {color: "#fff",align:"center", background: "#D44950"});
                     }
 
                     else if(response.status==3){
                       
-                      $('#display').html('<div class="alert alert-primary" role="alert">'+response.message+'</div>');
+                      $.notify(response.message, {color: "#fff",align:"center", background: "#D44950"});
                     }
                     else if(response.status==4){
-                      window.location.href = '<?php echo base_url("Bank/index");  ?>';
+                      window.location.href = '<?php echo base_url("User/index");  ?>';
        
                     }
                         
