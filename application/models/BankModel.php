@@ -113,22 +113,7 @@ public function branchEmailCheck($data, $branchId){
     $rowcount=$query->num_rows();
     return $rowcount;
 }
-/* public function userDetails(){
-    $this->db->select('*');
-$this->db->from('customers');
-$this->db->join('accounts', 'customers.id = accounts.customers_id');
 
-return $this->db->get()->result();
-// echo var_dump($query);
-} */
-/* public function userDetails() {
-    $this->db->select('*');
-    $this->db->from('accounts');
-    $this->db->join('customers', 'accounts.customers_id = customers.id');
-    $this->db->where('customers.status', array(1, 2));
-
-    return $this->db->get()->result();
-} */
 public function userDetails() {
     $this->db->select('*');
     $this->db->from('accounts');
@@ -151,13 +136,6 @@ function checkUser($id){
     return $this->db->get_where('branches',array('id'=>$id));
    }
    public function deleteData($id) {
-/*     $this->db->where('customers.id', $id);
-    $this->db->delete('customers');
-    $this->db->where('accounts.customers_id', $id);
-    // $this->db->where('accounts.customers_id', $id);
-    $this->db->delete('accounts');
-    return true; */
-
     $this->db->trans_start();
 
 $this->db->where('customers.id', $id);
@@ -256,6 +234,9 @@ public function deposit_money($data) {
     $this->db->trans_complete();
 
     if ($this->db->trans_status() === FALSE) {
+        $transaction_faild=array('amount'=>$data['amount'],'errorType'=>'Bank Sarver Down','date'=>$data['date'],'customers_id'=>$data['customers_id']);
+        $this->db->insert('transaction_failed',$transaction_faild);
+
     return false;
     } else {
     // handle success
@@ -279,7 +260,9 @@ public function withdraw_money($data) {
     // Check if the withdrawal amount exceeds the available balance
     if ($data['amount'] > $current_balance) {
         $this->db->trans_rollback();
-        return false;
+        $transaction_faild=array('amount'=>$data['amount'],'errorType'=>'Insufficient Funds','date'=>$data['date'],'customers_id'=>$data['customers_id']);
+        $this->db->insert('transaction_failed',$transaction_faild);
+        return 0;
     }
 
     // Update the account balance with the withdrawal amount
@@ -293,17 +276,23 @@ public function withdraw_money($data) {
     $this->db->trans_complete();
 
     if ($this->db->trans_status() === FALSE) {
-        return false;
+        $transaction_faild=array('amount'=>$data['amount'],'errorType'=>'Bank Sarver Down','date'=>$data['date'],'customers_id'=>$data['customers_id']);
+        $this->db->insert('transaction_failed',$transaction_faild);
+        return 2;
     } else {
         // Return the new account balance
-        return $new_balance;
+        return 1;
     } 
 }
 
 
     /* updateBalance */
-    public function updateBalance($accountNumber){
-       return  $this->db->get_where('accounts',array('accountNumber'=>$accountNumber))->result();
+    public function updateBalance($customers_id){
+        $query= $this->db->get_where('accounts',array('customers_id'=>$customers_id));
+         $row=$query->row();
+        return $row->balance;
+         
+
     }
 
 

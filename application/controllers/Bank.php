@@ -10,11 +10,6 @@ class Bank extends CI_Controller{
             $this->load->model('BankModel','bm');
             $this->load->helper('URL');
             $this->load->library('pagination');
-            // $this->load->helper("url");
-
-            echo "hi";
-            
-
         }
         
         
@@ -543,7 +538,7 @@ public function deposit_money() {
             $updated_balance = $this->bm->deposit_money($data);
             if ($updated_balance !== false) {
                 /* email send code  */
-                echo json_encode(array('status'=>1,'msg'=>'Money deposited successfully.', 'balance' => $updated_balance));
+                echo json_encode(array('status'=>1,'msg'=>'Money deposited successfully.'));
             } else {
                 echo json_encode(array('status'=>0,'msg'=>'Money deposit failed. Please try again later.'));
             }
@@ -571,28 +566,33 @@ public function withdraw_money() {
         $data['type']="withdraw";
         $data['accountNumber']=$this->input->post('accountNo',true);
         $data['date']=date('y:m:d h:i:sa');
-        // echo var_dump($data);
-                    // die();
             $updated_balance = $this->bm->withdraw_money($data);
             // echo $updated_balance;
             // die();
-            if ($updated_balance !== false) {
+            if ($updated_balance == 1) {
                 /* email send code  */
-                echo json_encode(array('status'=>1,'msg'=>'Money withdraw successfully.', 'balance' => $updated_balance));
+                echo json_encode(array('status'=>1,'msg'=>'Money withdraw successfully.'));
             }
-            // else if($updated_balance==2){
-            //     echo json_encode(array('status'=>2,'msg'=>'Insufficient balance.'));
-            // }
-            else {
-                echo json_encode(array('status'=>0,'msg'=>'Money withdraw failed. Please try again later.'));
+            else if($updated_balance==0){
+                echo json_encode(array('status'=>0,'msg'=>'Insufficient balance.'));
             }
-                
+            else if($updated_balance==2) {
+                echo json_encode(array('status'=>2,'msg'=>'Money withdraw failed. Please try again later.'));
+            }
+         
 
     } else {
 
        
     }
 }
+/* ****************updateBalance******************* */
+public function updateBalance(){
+    $customers_id=$this->input->post('data',true);
+    $updateBalance=$this->bm->updateBalance($customers_id);
+    // echo $updateBalance;
+    echo json_encode(array('updatebala'=>$updateBalance));
 
+}
 }
 ?>
