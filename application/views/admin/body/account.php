@@ -229,117 +229,6 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
 });
 
 
-
-
-/* $(document).ready(function() {
-    // Bind a function to the input event of the search input field
-    $('#search_input').on('input', function(e) {
-		e.preventDefault();
-        // Get the search query from the input field
-        var query = $('#search_input').val();
-
-        // Send an AJAX request to the search endpoint to fetch the results
-        $.ajax({
-            url: '<?php echo base_url('Bank/searchResult') ?>',
-            type: 'POST',
-            data: {data: query},
-            dataType: 'json',
-            success: function(result) {
-
-
-                if(result.length > 0) { // check if the result array is not empty
-                    // set the values of the input fields and disable them
-                    $('#userName').val(result[0].name).prop('disabled', true);
-                    $('#accountNo').val(result[0].accountNumber).prop('disabled', true);
-
-                    // if(result.length==1){
-						// $('.container').fadeIn(700);
-						
-                        $('.container').show();
-                        $('.a').show();
-                        $('.b').show();
-                        
-                        $('#data').empty();
-                        $('#data').append('<tr><td>Name:</td><td>' + result[0].name + '</td></tr>');
-                        $('#data').append('<tr><td>Account Number:</td><td>' + result[0].accountNumber + '</td></tr>');
-                        $('#data').append('<tr><td>Bank ID:</td><td>' + result[0].branch_id + '</td></tr>');
-                        $('#data').append('<tr><td>Email ID:</td><td>' + result[0].email + '</td></tr>');
-                        $('#data').append('<tr><td>Phone Number:</td><td>' + result[0].phone + '</td></tr>');
-                        $('#data').append('<tr><td>Balance:</td><td>' + result[0].balance + '</td></tr>');
-                        $('#data').append('<tr><td>Opening Date:</td><td>' + result[0].openaningdate + '</td></tr>');
-                        var statusText = result[0].status == 2 ? 'Block' : 'Active';  // set status text
-                        var statusClass = result[0].status == 2 ? 'text-danger' : 'text-success';  // set status class based on condition
-                        $('#data').append('<tr><td>Account Status:</td><td class="' + statusClass + '">' + statusText + '</td></tr>');
-                        $('#data').append('<tr><td><input type="button" value="add money" class="btn btn-success a" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-account-number="' + result[0].accountNumber + '"></td><td><input type="button" value="Withdraw" class="btn btn-success b"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-account-number="' + result[0].accountNumber + '"></td></tr>');
-                        // $('#data').append('<tr><td><input type="button" value="add money" class="btn btn-success a" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-account-number="' + result[0].accountNumber + '"></td>');
-
-					// }
-																}  else {
-						// clear the input fields and hide the container and buttons
-						
-						$('.container').hide();
-						}
-						},
-						error: function() {
-						// show an error message if the AJAX request fails
-						alert('Failed to retrieve search results');
-						}
-						});
-}); */
-
-// $(document).ready(function() {
-//     // Bind a function to the input event of the search input field
-//     $('#search_input').on('input', function() {
-//         // Get the search query from the input field
-//         const query = $('#search_input').val();
-
-//         // Send an AJAX request to the search endpoint to fetch the results
-//         $.ajax({
-//             url: "<?php echo base_url('Bank/searchResult');  ?>",
-//             type: 'POST',
-//             data: {data: query},
-//             dataType: 'json',
-//             success: function(result) {
-//                 if (result.length > 0) {
-//                     // set the values of the input fields and disable them
-//                     const {id,name, accountNumber, branch_id, email, phone, balance, openaningdate, status} = result[0];
-//                     $('#userName').val(name).prop('disabled', true);
-//                     $('#accountNo').val(accountNumber).prop('disabled', true);
-//                     $('#customerId').val(id);
-//                     $('#status').val(status);
-
-//                     $('.container').show();
-//                     $('.a').show();
-//                     $('.b').show();
-
-//                     $('#data').empty();
-//                     $('#data').append(`<tr><td>Name:</td><td>${name}</td></tr>`);
-//                     $('#data').append(`<tr><td>Account Number:</td><td>${accountNumber}</td></tr>`);
-//                     $('#data').append(`<tr><td>Bank ID:</td><td>${branch_id}</td></tr>`);
-//                     $('#data').append(`<tr><td>Email ID:</td><td>${email}</td></tr>`);
-//                     $('#data').append(`<tr><td>Phone Number:</td><td>${phone}</td></tr>`);
-//                     // <i class="fa-regular fa-indian-rupee-sign fa-xl" style="color: #c8ba1e;"></i>
-//                     $('#data').append(`<tr><td>Balance:</td><td><i class="fa-solid  fa-indian-rupee-sign" style="color: #c8ba1e;"></i> ${balance}</td></tr>`);
-//                     $('#data').append(`<tr><td>Opening Date:</td><td>${openaningdate}</td></tr>`);
-//                     const statusText = status == 2 ? 'Block' : 'Active';
-//                     const statusClass = status == 2 ? 'text-danger' : 'text-success';
-//                     $('#data').append(`<tr><td>Account Status:</td><td class="${statusClass}">${statusText}</td></tr>`);
-//                     $('#data').append(`<tr><td><input type="button" value="add money" class="btn btn-success a" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-account-number="${accountNumber}"></td><td><input type="button" value="Withdraw" class="btn btn-success b"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-account-number="${accountNumber}"></td></tr>`);
-//                 } else {
-//                     $('#userName').val('').prop('disabled', false);
-//                     $('#accountNo').val('').prop('disabled', false);
-//                     $('.container').hide();
-//                     $('.a').hide();
-//                     $('.b').hide();
-//                 }
-//             },
-//             error: function(jqXHR, textStatus, errorThrown) {
-//                 // show an error message if the AJAX request fails
-//                 console.log(`Error fetching search results: ${textStatus} - ${errorThrown}`);
-//             }
-//         });
-// });
-
 $(document).ready(function() {
     // Bind a function to the input event of the search input field
    
@@ -376,13 +265,13 @@ $('#deposit').click(function(e){
                 dataType: "json",
                 success: function (response) { 
                   
-                  $('#balance').html('<i class="fa-solid fa-indian-rupee-sign" style="color: #c8ba1e;"></i>'+" " +response.balance);
- 
+                  // $('#balance').html('<i class="fa-solid fa-indian-rupee-sign" style="color: #c8ba1e;"></i>'+" " +response.balance);
+                  
                   if(response.status==1){
                     $('#amount').val('');
 
                     $('#exampleModal1').modal('hide');
-                    
+                    updateBalance(id);
                   Swal.fire(
                 'Successfull!',
                 response.msg,
@@ -436,21 +325,28 @@ $('#withdrow').click(function(e){
                 data: {id:id,accountNo:acc,amount:amt},
                 dataType: "json",
                 success: function (response) { 
-                  $("#balance").text(balance);
                   if(response.status==1){
                     $('#amt').val('');
                     $('#exampleModal').modal('hide');
-                    console.log(response.balance);
-                    if(response.balance !=0){
-                    $('#balance').html('<i class="fa-solid fa-indian-rupee-sign" style="color: #c8ba1e;"></i>'+" " + response.balance);
-                    }
+                    updateBalance(id);    
                   Swal.fire(
                 'Successfull!',
                 response.msg,
                 'success'
               )
                 }
-                else{
+                if(response.status==0){
+                 
+                  Swal.fire(
+                'Faild!',
+                response.msg,
+                'info')
+                
+              
+                }
+
+
+                else if(response.status==2){
                   Swal.fire(
                 'Faild!',
                 response.msg,
@@ -512,7 +408,7 @@ $('#withdrow').click(function(e){
                     $('#data').append(`<tr><td>Email ID:</td><td>${email}</td></tr>`);
                     $('#data').append(`<tr><td>Phone Number:</td><td>${phone}</td></tr>`);
                     // <i class="fa-regular fa-indian-rupee-sign fa-xl" style="color: #c8ba1e;"></i>
-                    $('#data').append(`<tr><td>Balance:</td><td id="balance"><i class="fa-solid  fa-indian-rupee-sign" style="color: #c8ba1e;"></i> ${balance}</td></tr>`);
+                    $('#data').append(`<tr><td>Balance:</td><td id="balance1"><i class="fa-solid  fa-indian-rupee-sign" style="color: #c8ba1e;"></i> ${balance}</td></tr>`);
                     $('#data').append(`<tr><td>Opening Date:</td><td>${openaningdate}</td></tr>`);
                     const statusText = status == 2 ? 'Block' : 'Active';
                     const statusClass = status == 2 ? 'text-danger' : 'text-success';
@@ -522,21 +418,40 @@ $('#withdrow').click(function(e){
                     $('#userName').val('').prop('disabled', false);
                     $('#accountNo').val('').prop('disabled', false);
                     $('.container').hide();
+              
                     $('.a').hide();
                     $('.b').hide();
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 // show an error message if the AJAX request fails
-                console.log(`Error fetching search results: ${textStatus} - ${errorThrown}`);
+                // console.log(`Error fetching search results: ${textStatus} - ${errorThrown}`);
             }
         });
 }); 
-    
-
-function data(){
   
+function updateBalance(id){
+  $.ajax({
+            url: "<?php echo base_url('Bank/updateBalance');  ?>",
+            type: 'POST',
+            data: {data: id},
+            dataType: 'json',
+            success: function(response) {
+
+                  
+                // console.log(response[0].updatebala);
+                // alert((response[0].updatebala));
+
+              $('#balance1').html('<i class="fa-solid fa-indian-rupee-sign" style="color: #c8ba1e;"></i>'+" " + response.updatebala);
+                   
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+
+            }
+        });
 }
+
+
 
 
    
