@@ -197,6 +197,16 @@ public function moneyTransfer(){
         redirect('User/login');
     }
 }
+
+    /* ******************* Reciver Details ******************* */
+private $result;
+public function reciverDetails(){
+    $toAccount=$this->input->post('toAccount',true);
+    $this->result=$this->um->reciverDetails($toAccount);
+    // print_r($result);
+    echo json_encode($this->result);
+}
+
 public function transfer(){
     $userid=userId();
     $data['toAccount']=$this->input->post('toAccount',true);
@@ -204,7 +214,9 @@ public function transfer(){
     $data['remarks']=$this->input->post('remarks',true);
     $data['date']=date('y:m:d h:m:sa');
     $data['customers_id']=$userid;
-    
+    if($this->result==false){
+        echo json_encode(array('status'=>5,'msg'=>'Wrong Account Number')); 
+    }else{
    /* user are not allow to transfer there own account */
    $accountNumber=$this->um->userAccountCheck($userid);
 //    echo $accountNumber;
@@ -225,17 +237,11 @@ public function transfer(){
        echo json_encode(array('status'=>4,'msg'=>'Money Transfer Successfull'));
     }
    }
+}
 
 
 }
-/* ******************* Reciver Details ******************* */
 
-public function reciverDetails(){
-    $toAccount=$this->input->post('toAccount',true);
-    $result=$this->um->reciverDetails($toAccount);
-    // print_r($result);
-    echo json_encode($result);
-}
 
 
 

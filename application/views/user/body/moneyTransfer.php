@@ -66,7 +66,7 @@
     }
     if (amount === '') {
       // Display a toastr alert for the amount field
-      toastr.error('Please enter the loan amount.', {
+      toastr.error('Please enter the Transfer amount.', {
         duration: 3000,
         position: 'bottom-right'
       });
@@ -111,6 +111,12 @@
                     status.msg,
                     'success'
                   )
+                  }
+                  else if(response.status==5){
+                    toastr.error(response.msg, {
+                  duration: 3000,
+                  position: 'bottom-right'
+                  });
                   }
                     
                 }

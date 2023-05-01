@@ -32,9 +32,11 @@ class UserModel extends CI_Model{
       $results = $query->result();
       return $results;
      }
+     /* checking recipient account number */
+
      public function transfer($data,$accountNumber){
 
-         /* Get sender's account balance  */ 
+      /* Get sender's account balance  */ 
 
     $this->db->select('balance');
     $this->db->from('accounts');
