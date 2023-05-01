@@ -8,6 +8,7 @@ class User extends CI_Controller{
             //Do your magic here
             $this->load->model('UserModel','um');
             $this->load->helper('URL');
+            $this->load->helper('customaction_helper');
 
             
 
@@ -63,7 +64,6 @@ class User extends CI_Controller{
                 // redirect('Bank/index');
                 // $this->index();
                 echo json_encode(array('status' => 4));
-  
                }
                else{
                
@@ -121,14 +121,125 @@ class User extends CI_Controller{
 
         
     }
-    // admin logout
-    public function logout(){
-        if($this->session->userdata('email')){
-            $this->session->unset_userdata('email');
-            redirect('User/login');
+     /* ******************* User Logout ******************* */
+     public function logout() {
+        if(userId() || userName() || userEmail()){
+        $this->session->unset_userdata('id');
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('name');
+        $this->session->sess_destroy();
+        redirect('User/login');
+    }
+}
+    
 
+    /* ******************* loan account ******************* */
+
+    function loan(){
+        
+            $this->load->view('user/header/header');
+            $this->load->view('user/header/css');
+            $this->load->view('user/header/leftnavbar');
+            $this->load->view('user/header/navbar');
+            $this->load->view('user/body/loan');
+            $this->load->view('user/footer/footer');
+            $this->load->view('admin/footer/js');
+            $this->load->view('user/footer/end');
+    
+    }
+    public function loanApplication(){
+        $data['customers_id']=$this->session->userdata('id');
+        $data['income']=$this->input->post('income',true);
+        $data['occupation']=$this->input->post('occupation',true);
+        $data['amount']=$this->input->post('amount',true);
+        $data['term']=$this->input->post('term',true);
+        $data['loanType']=$this->input->post('loanType',true);
+        $data['date']=date('y:m:d h:m:sa');
+        $data['status']=0;
+        $customer_id_check=$this->um->customer_id_check($data['customers_id']);
+        
+        if($customer_id_check->num_rows()==1){
+            echo json_encode(array('status'=>1,'msg'=>'Contact To Your branch'));
+        }
+        else{
+            $loanApplication=$this->um->loanApplication($data);
+            if($loanApplication){
+                echo json_encode(array('status'=>2,'msg'=>'Loan application submitted successfully.'));  
+            }
+            else{
+                echo json_encode(array('status'=>2,'msg'=>'Please try again later'));  
+            }
         }
     }
+/* ******************* END ******************* */
+
+/* ******************* MONEY TRANSFER ******************* */
+
+public function moneyTransfer(){
+    if(isSession()){
+        $this->load->view('user/header/header');
+        $this->load->view('user/header/css');
+        $this->load->view('user/header/leftnavbar');
+        $this->load->view('user/header/navbar');
+        $this->load->view('user/body/moneyTransfer');
+        $this->load->view('user/footer/footer');
+        $this->load->view('admin/footer/js');
+        $this->load->view('user/footer/end'); 
+    } else {
+        ?>
+        <script>
+            toastr.error('You Have To Login First.', {
+            duration: 3000,
+            position: 'bottom-right'
+          });
+        </script>
+        <?php
+        redirect('User/login');
+    }
+}
+public function transfer(){
+    $userid=userId();
+    $data['toAccount']=$this->input->post('toAccount',true);
+    $data['amount']=$this->input->post('amount',true);
+    $data['remarks']=$this->input->post('remarks',true);
+    $data['date']=date('y:m:d h:m:sa');
+    $data['customers_id']=$userid;
+    
+   /* user are not allow to transfer there own account */
+   $accountNumber=$this->um->userAccountCheck($userid);
+//    echo $accountNumber;
+   
+   if($accountNumber ==$data['toAccount']){
+   echo json_encode(array('status'=>1,'msg'=>'You are not allowed to transfer you own account'));
+//     var_dump($data);
+//    die();
+   }else{
+    $status=$this->um->transfer($data,$accountNumber);
+    if($status==2){
+       echo json_encode(array('status'=>2,'msg'=>'Insufficent Funds'));   
+    }
+    else if($status==3){
+       echo json_encode(array('status'=>3,'msg'=>'Bank Server Down'));
+    }
+    else if($status==4){
+       echo json_encode(array('status'=>4,'msg'=>'Money Transfer Successfull'));
+    }
+   }
+
+
+}
+/* ******************* Reciver Details ******************* */
+
+public function reciverDetails(){
+    $toAccount=$this->input->post('toAccount',true);
+    $result=$this->um->reciverDetails($toAccount);
+    // print_r($result);
+    echo json_encode($result);
+}
+
+
+
+
 
 }
 ?>

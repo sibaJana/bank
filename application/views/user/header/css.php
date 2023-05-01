@@ -9,6 +9,7 @@
   
   <link id="pagestyle" href="<?php echo base_url('assets/css/soft-ui-dashboard.css'); ?>" rel="stylesheet" />
   <link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css') ?>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
  
 </head>
