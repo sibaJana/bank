@@ -594,5 +594,20 @@ public function updateBalance(){
     echo json_encode(array('updatebala'=>$updateBalance));
 
 }
+
+/* ***************************Loan Application*************************** */
+
+    public function loan(){
+        $this->load->view('admin/header/header');
+        $this->load->view('admin/header/css');
+        $this->load->view('admin/header/leftnavbar');
+        $this->load->view('admin/header/navbar');
+        $this->load->view('admin/body/loanapplication');
+        $this->load->view('admin/footer/footer');
+        $this->load->view('admin/footer/js');
+        $this->load->view('admin/footer/end');  
+    }
+
+
 }
 ?>
