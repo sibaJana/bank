@@ -123,7 +123,7 @@ class User extends CI_Controller{
     }
      /* ******************* User Logout ******************* */
      public function logout() {
-        if(userId() || userName() || userEmail()){
+        if(isSession()){
         $this->session->unset_userdata('id');
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('name');
@@ -198,33 +198,39 @@ public function moneyTransfer(){
     }
 }
 
-    /* ******************* Reciver Details ******************* */
+    /* reciver details */   
 private $result;
 public function reciverDetails(){
-    $toAccount=$this->input->post('toAccount',true);
-    $this->result=$this->um->reciverDetails($toAccount);
-    // print_r($result);
+    $receiver_account=$this->input->post('receiver_account',true);
+    $this->result=$this->um->reciverDetails($receiver_account);
     echo json_encode($this->result);
 }
+public function reciveraccount(){
+    $receiver_account=$this->input->post('receiver_account',true);
+    $this->result=$this->um->reciverDetails($receiver_account);
+    // echo json_encode($this->result);
+}
+/* fund transfer */
 
 public function transfer(){
     $userid=userId();
-    $data['toAccount']=$this->input->post('toAccount',true);
+    $data['sender_id']=$userid;
+    $data['receiver_id']=$this->input->post('receiver_id',true);
+    $data['sender_name']=userName();
+    $data['receiver_name']=$this->input->post('receiver_name',true);
+    $data['sender_account']=$this->um->userAccountCheck($userid);
+    $data['receiver_account']=$this->input->post('receiver_account',true);
     $data['amount']=$this->input->post('amount',true);
     $data['remarks']=$this->input->post('remarks',true);
-    $data['date']=date('y:m:d h:m:sa');
-    $data['customers_id']=$userid;
-    if($this->result==false){
+    $data['transaction_date']=date('y:m:d h:m:sa');
+    $this->reciveraccount();
+    if(empty($this->result)){
         echo json_encode(array('status'=>5,'msg'=>'Wrong Account Number')); 
     }else{
    /* user are not allow to transfer there own account */
-   $accountNumber=$this->um->userAccountCheck($userid);
-//    echo $accountNumber;
-   
-   if($accountNumber ==$data['toAccount']){
+   $accountNumber=$this->um->userAccountCheck($userid);   
+   if($accountNumber ==$data['receiver_account']){
    echo json_encode(array('status'=>1,'msg'=>'You are not allowed to transfer you own account'));
-//     var_dump($data);
-//    die();
    }else{
     $status=$this->um->transfer($data,$accountNumber);
     if($status==2){
@@ -241,11 +247,32 @@ public function transfer(){
 
 
 }
+/* ******************* END ******************* */
 
-
-
-
-
-
+/* ******************* transaction Details ******************* */
+public function all_transaction(){
+    if(isSession()){
+        $userid=userId();
+        $history['data']=$this->um->getCreditDebitTransactions($userid);
+        $this->load->view('user/header/header');
+        $this->load->view('user/header/css');
+        $this->load->view('user/header/leftnavbar');
+        $this->load->view('user/header/navbar');
+        $this->load->view('user/body/hrasation_history',array('data'=>$history,'userid'=>$userid));
+        $this->load->view('user/footer/footer');
+        $this->load->view('admin/footer/js');
+        $this->load->view('user/footer/end'); 
+    } else {
+        ?>
+        <script>
+            toastr.error('You Have To Login First.', {
+            duration: 3000,
+            position: 'bottom-right'
+          });
+        </script>
+        <?php
+        redirect('User/login');
+    }
+}
 }
 ?>
