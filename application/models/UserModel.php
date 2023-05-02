@@ -23,11 +23,11 @@ class UserModel extends CI_Model{
      }
 
      /* ******************* Reciver Details ******************* */
-     public function reciverDetails($toAccount){
+     public function reciverDetails($receiver_account){
       $this->db->select('*');
       $this->db->from('customers');
       $this->db->join('accounts', 'accounts.customers_id = customers.id');
-      $this->db->where('accounts.accountNumber', $toAccount);
+      $this->db->where('accounts.accountNumber', $receiver_account);
       $query = $this->db->get();
       $results = $query->result();
       return $results;
@@ -47,15 +47,17 @@ class UserModel extends CI_Model{
     /* Get recipient's account balance */
     $this->db->select('balance');
     $this->db->from('accounts');
-    $this->db->where('accountNumber', $data['toAccount']);
+    $this->db->where('accountNumber', $data['receiver_account']);
     $query = $this->db->get();
     $recipient_balance = $query->row()->balance;
     /* Calculate new balances */
    
    if($sender_balance<$data['amount']){
       $this->db->trans_rollback();
-      $transaction_faild=array('amount'=>$data['amount'],'errorType'=>'Insufficient Funds','date'=>$data['date'],'customers_id'=>$data['customers_id'],'remarks'=>$data['remarks'],'toAccount'=>$data['toAccount']);
-      $this->db->insert('transaction_failed',$transaction_faild);
+      $transaction_faild=array('sender_id'=>$data['sender_id'],'receiver_id'=>$data['receiver_id'],'sender_name'=>$data['sender_name'],
+      'receiver_name'=>$data['receiver_name'],'sender_account'=>$data['sender_account'],'receiver_account'=>$data['receiver_account'],
+      'amount'=>$data['amount'],'remarks'=>$data['remarks'],'transaction_date'=>$data['transaction_date'],'error_type'=>'Insufficient Balance','type'=>'Transafer','status'=>0);
+      $this->db->insert('transaction_table',$transaction_faild);
       return 2;
    }
    $this->db->trans_start();
@@ -66,18 +68,22 @@ class UserModel extends CI_Model{
     $this->db->set('balance', $sender_new_balance);
     $this->db->update('accounts');
       /* Update recipient's account balance */
-    $this->db->where('accountNumber', $data['toAccount']);
+    $this->db->where('accountNumber', $data['receiver_account']);
     $this->db->set('balance', $recipient_new_balance);
     $this->db->update('accounts');
     $this->db->trans_complete();
 
     if ($this->db->trans_status() === FALSE) {
-      $transaction_faild=array('amount'=>$data['amount'],'errorType'=>'Bank Sarver Down','date'=>$data['date'],'customers_id'=>$data['customers_id'],'remarks'=>$data['remarks'],'toAccount'=>$data['toAccount']);
-      $this->db->insert('transaction_failed',$transaction_faild);
+      $transaction_faild=array('sender_id'=>$data['sender_id'],'receiver_id'=>$data['receiver_id'],'sender_name'=>$data['sender_name'],
+      'receiver_name'=>$data['receiver_name'],'sender_account'=>$data['sender_account'],'receiver_account'=>$data['receiver_account'],
+      'amount'=>$data['amount'],'remarks'=>$data['remarks'],'transaction_date'=>$data['transaction_date'],'error_type'=>'Bank Server Down','type'=>'Transafer','status'=>0);
+      $this->db->insert('transaction_table',$transaction_faild);
       return 3;
   } else {
-   $transaction=array('amount'=>$data['amount'],'type'=>'Transfer','date'=>$data['date'],'customers_id'=>$data['customers_id'],'remarks'=>$data['remarks'],'toAccount'=>$data['toAccount'],'accountNumber'=>$accountNumber);
-   $this->db->insert('transaction',$transaction);
+   $transaction=array('sender_id'=>$data['sender_id'],'receiver_id'=>$data['receiver_id'],'sender_name'=>$data['sender_name'],
+   'receiver_name'=>$data['receiver_name'],'sender_account'=>$data['sender_account'],'receiver_account'=>$data['receiver_account'],
+   'amount'=>$data['amount'],'remarks'=>$data['remarks'],'transaction_date'=>$data['transaction_date'],'type'=>'Transafer','status'=>1);
+   $this->db->insert('transaction_table',$transaction);
    return 4;
   
   }
@@ -94,5 +100,50 @@ class UserModel extends CI_Model{
       $results = $query->row()->accountNumber;
       return $results;
      }
+     /* ******************* Reciver Details ******************* */
+
+     /* public function getCreditDebitTransactions($userid) {
+      if (!$userid) {
+          return null; // or throw an error
+      }
+      
+      $this->db->select('*');
+      $this->db->from('transaction_table');
+      $this->db->where("(sender_id = $userid OR receiver_id = $userid)");
+      $this->db->order_by('transaction_date', 'desc');
+      
+      $result = $this->db->get();
+      if (!$result) {
+          return null; // or throw an error
+      }
+      
+      return $result->result();
+  }
+  
+   */
+
+   public function getCreditDebitTransactions($userid) {
+      if (!$userid) {
+          return null; // or throw an error
+      }
+      
+      $this->db->select('*');
+      $this->db->from('transaction_table');
+      $this->db->where("(sender_id = $userid OR receiver_id = $userid)");
+  
+      // Check if status is equal to 0 and sender_id is equal to 1001
+      $this->db->where("(status != 0 OR sender_id = $userid)");
+  
+      $this->db->order_by('transaction_date', 'desc');
+      
+      $result = $this->db->get();
+      if (!$result) {
+          return null; // or throw an error
+      }
+      
+      return $result->result();
+  }
+  
+
 }
 ?>
