@@ -1,3 +1,4 @@
+<input type="hidden" id="user_id" value="<?php  echo $userid;  ?>">
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -29,6 +30,7 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+        
         <li class="nav-item">
           <a class="nav-link  " href="<?php echo base_url('User/loan');  ?>">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -90,8 +92,9 @@
             <span class="nav-link-text ms-1">Transaction History</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link  " href="../pages/rtl.html">
+        
+        <li class="nav-item" id="atm_display">
+          <a class="nav-link  " href="<?php echo base_url('User/atm'); ?>">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>settings</title>
@@ -108,9 +111,12 @@
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Debit Card</span>
           </a>
         </li>
+        
+
+
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
         </li>
@@ -181,23 +187,36 @@
     </div>
     
   </aside>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
   <script>
-    // Get the link element
-var link = document.getElementById("link");
 
-// Add a click event listener to the link
-link.addEventListener("click", function(event) {
-  // Prevent the default link behavior
-  event.preventDefault();
-
-  // Add the "fade-out" class to the body element
-  document.body.classList.add("fade-out");
-
-  // Redirect to the new page after the animation completes
-  setTimeout(function() {
-    window.location = link.href;
-  }, 1000); // Wait for 1 second (the same duration as the animation)
+$(document).ready(function(){
+  atm_display();
 });
+
+function atm_display(){
+  
+  var user_id=$('#user_id').val();
+  $.ajax({
+      type: "post",
+      url: "<?php echo base_url('User/atm_display'); ?>",
+      data:{user_id:user_id},
+      dataType: "json",
+      success: function (response) {
+
+        if(response.status==1){
+          $('#atm_display').hide();
+        }
+    
+
+
+
+        }
+      
+    });
+
+
+}
 
   </script>

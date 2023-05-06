@@ -1,6 +1,7 @@
 <!-- loading animation -->
 <div class='container1'>
  
+
  
     <!-- Navbar -->
     
@@ -13,10 +14,10 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Money</p>
-                    <h5 class="font-weight-bolder mb-0">
-                      $53,000
-                      <span class="text-success text-sm font-weight-bolder">+55%</span>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Balance</p>
+                    <h5 id="balance" class="font-weight-bolder mb-0">
+                      
+                      
                     </h5>
                   </div>
                 </div>
@@ -96,19 +97,22 @@
           </div>
         </div>
       </div>
-
-      <div class="row mt-4">
+       
+      
+      
+<div class="row mt-4" id="debitcard">
         <div class="col-lg-7 mb-lg-0 mb-4">
           <div class="card">
             <div class="card-body p-3">
               <div class="row">
                 <div class="col-lg-6">
                   <div class="d-flex flex-column h-100">
-                    <p class="mb-1 pt-2 text-bold">Built by developers</p>
-                    <h5 class="font-weight-bolder">Soft UI Dashboard</h5>
+                    <p class="mb-1 pt-2 text-bold">Applay for Debit Card</p>
+                    <h5 class="font-weight-bolder">UI Design Vitual Debit Card</h5>
                     <p class="mb-5">From colors, cards, typography to complex elements, you will find the full documentation.</p>
-                    <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-                      Read More
+                    <!-- <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;"> -->
+                    <input type="hidden" id="userid"  value="<?php echo $userid;  ?>">
+                      <input type="button" id="atm_applay" class="btn btn-success" value="Applay">
                       <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
                     </a>
                   </div>
@@ -141,6 +145,10 @@
           </div>
         </div>
       </div>
+       
+
+      
+
       <div class="row mt-4">
         <div class="col-lg-5 mb-lg-0 mb-4">
           <div class="card z-index-2">
@@ -666,10 +674,71 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
  
-  <script>
-    $(window).on('load', function() {
-  // setTimeout(function(){
-$('.loader').fadeOut('slow');
-// },3000);
-});
+<script>
+ $(document).ready(function(){
+  display();
+  $('#atm_applay').click(function(e){
+    e.preventDefault();
+    $.ajax({
+      type: "post",
+      url: "<?php echo base_url('User/applayAtm'); ?>",
+      dataType: "json",
+      success: function (response) {
+        if(response.status==1){
+          toastr.success(response.msg, {
+        duration: 3000,
+        position: 'bottom-center'
+        
+      });
+      display();
+        }else{
+          toastr.error(response.msg, {
+        duration: 3000,
+        position: 'bottom-right'
+      });
+        }
+      }
+    });
+  });
+
+function display(){
+  var userid=$('#userid').val();
+  $.ajax({
+      type: "post",
+      url: "<?php echo base_url('User/atmDisplay'); ?>",
+      data:{userid:userid},
+      dataType: "json",
+      success: function (response) {
+
+        if(response.status==1){
+          $('#debitcard').hide();
+        }
+    
+
+
+
+        }
+      
+    });
+}
+
+var userid=$('#userid').val();
+$.ajax({
+  type: "post",
+      url: "<?php echo base_url('User/balanceDisplay'); ?>",
+      data:{userid:userid},
+      dataType: "json",
+      success: function (response) {
+
+      $('#balance').html('$ '+response.balance);
+
+
+
+        }
+})
+
+
+ }); // ready function
+
+
   </script>

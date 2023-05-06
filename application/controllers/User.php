@@ -18,11 +18,13 @@ class User extends CI_Controller{
     
     function index(){
         if($this->session->userdata('email')){
+            $userid['userid']=userId();
+            
         $this->load->view('user/header/header');
         $this->load->view('user/header/css');
-        $this->load->view('user/header/leftnavbar');
+        $this->load->view('user/header/leftnavbar',$userid);
         $this->load->view('user/header/navbar');
-        $this->load->view('user/body/main');
+        $this->load->view('user/body/main',$userid);
         $this->load->view('user/footer/footer');
         $this->load->view('user/footer/js');
         $this->load->view('user/footer/end');
@@ -82,6 +84,7 @@ class User extends CI_Controller{
 
     // singup for user
     public function singup(){
+        
         $branch['data']=$this->um->branch();
         $this->load->view('user/header/header');
         $this->load->view('user/header/css');
@@ -136,10 +139,10 @@ class User extends CI_Controller{
     /* ******************* loan account ******************* */
 
     function loan(){
-        
+        $userid['userid']=userId();
             $this->load->view('user/header/header');
             $this->load->view('user/header/css');
-            $this->load->view('user/header/leftnavbar');
+            $this->load->view('user/header/leftnavbar',$userid);
             $this->load->view('user/header/navbar');
             $this->load->view('user/body/loan');
             $this->load->view('user/footer/footer');
@@ -177,9 +180,10 @@ class User extends CI_Controller{
 
 public function moneyTransfer(){
     if(isSession()){
+        $userid['userid']=userId();
         $this->load->view('user/header/header');
         $this->load->view('user/header/css');
-        $this->load->view('user/header/leftnavbar');
+        $this->load->view('user/header/leftnavbar',$userid);
         $this->load->view('user/header/navbar');
         $this->load->view('user/body/moneyTransfer');
         $this->load->view('user/footer/footer');
@@ -253,10 +257,11 @@ public function transfer(){
 public function all_transaction(){
     if(isSession()){
         $userid=userId();
+        $userid1['userid']=userId();
         $history['data']=$this->um->getCreditDebitTransactions($userid);
         $this->load->view('user/header/header');
         $this->load->view('user/header/css');
-        $this->load->view('user/header/leftnavbar');
+        $this->load->view('user/header/leftnavbar',$userid1);
         $this->load->view('user/header/navbar');
         $this->load->view('user/body/hrasation_history',array('data'=>$history,'userid'=>$userid));
         $this->load->view('user/footer/footer');
@@ -274,5 +279,70 @@ public function all_transaction(){
         redirect('User/login');
     }
 }
+
+public function atm(){
+    $userid['userid']=userId();
+    // $id=userId();
+    $debitCardDetails['debitCard']=$this->um->debitCardDetails($userid['userid']);
+    $this->load->view('user/header/header');
+    $this->load->view('user/header/css');
+    $this->load->view('user/header/leftnavbar',$userid);
+    $this->load->view('user/header/navbar');
+    $this->load->view('user/body/atm',$debitCardDetails);
+    $this->load->view('user/footer/footer');
+    $this->load->view('admin/footer/js');
+    $this->load->view('user/footer/end');
+    }
+    private $card_number;
+    private function atm_number(){
+        $unique_id = uniqid();
+        $random_number = str_pad(random_int(1, 999999999), 9, '0', STR_PAD_LEFT);
+        $this->card_number = substr(preg_replace("/[^0-9]/", "", $unique_id), -7) . $random_number;
+        $this->card_number = substr($this->card_number, 0, 16); // truncate to 16 digits if necessary
+        
+    }
+    public function applayAtm(){
+        $data['customers_id']=userId();
+        $data['customer_name']=userName();
+        // $data['expire_date']=date('m:y');
+        $data['expire_date']=date('y:m:d', strtotime('+10 years'));
+        $this->atm_number();
+        $data['atm_number']=$this->card_number;
+        $data['cvv']=rand(100,999);
+        $data['status']=0;
+        $data['pin']=rand(100000,999999);
+        $query=$this->um->applayAtm($data);
+        if($query){
+            echo json_encode(array('status'=>1,'msg'=>'Your Application Successfully Submited'));
+        }else{
+            echo json_encode(array('status'=>0,'msg'=>'Your Application not Submited'));
+        }
+        
+    }
+
+    public function atmDisplay(){
+        // $userid=userId();
+        $userid=$this->input->post('userid',true);
+        if($this->um->atmDisplay($userid)){
+            echo json_encode(array('status'=>1));
+        }else{
+            echo json_encode(array('status'=>0));
+        }
+    }
+    public function atm_display(){
+        $userid=$this->input->post('user_id',true);
+        if($this->um->atm_display($userid)){
+            echo json_encode(array('status'=>1));
+        }else{
+            echo json_encode(array('status'=>0));
+        }
+    }
+    public function balanceDisplay(){
+        $id=$this->input->post('userid',true);
+        $data=$this->um->balanceDisplay($id);
+        echo json_encode($data); 
+    }
+    
 }
+
 ?>

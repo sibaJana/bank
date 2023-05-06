@@ -143,7 +143,43 @@ class UserModel extends CI_Model{
       
       return $result->result();
   }
-  
-
+  public function atm($userid){
+    return $this->db->get_where('atm',array('status'=>1));
+  }
+  public function atm_applay($id){
+    return $this->db->get_where('atm',array('customers_id'=>$id));
+  }
+ 
+  public function applayAtm($data){
+    return $this->db->insert('atm',$data);
+  }
+  public function atmDisplay($id){
+    $result_set = $this->db->get_where('atm', array('customers_id'=>$id));
+    if($result_set->num_rows() > 0){
+     return 1;
+    } else {
+     return 0;
+    }
+ }
+public function atm_display($id){
+  $result_set = $this->db->get_where('atm', array('customers_id'=>$id,'status'=>0));
+  if($result_set->num_rows() > 0){
+   return 1;
+  } else {
+   return 0;
+  }
+}
+public function debitCardDetails($id){
+  return $this->db->get_where('atm',array('customers_id'=>$id))->result();
+}
+public function balanceDisplay($userid){
+  $this->db->select('*');
+  $this->db->from('customers');
+  $this->db->join('accounts', 'accounts.customers_id = customers.id');
+  $this->db->where('accounts.customers_id', $userid);
+  $query = $this->db->get();
+  $results = $query->row();
+  return $results;
+ }
 }
 ?>
